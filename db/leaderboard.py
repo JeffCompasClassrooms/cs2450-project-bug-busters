@@ -1,20 +1,22 @@
-# TODO: make a list of users ranked by number of coins
-import tinydb
-import users
+from flask import Blueprint, render_template
+from tinydb import TinyDB
 
-def update_coins(db,username,coins):
-    users = db.table('users')
-    User = tinydb.Query()
-    user = users.get(User.username == username)
-    if user:
-        # TODO: add boundaries so we can only add/subract a valid amount of coins
-        users.update({'coins': coins}, User.username == username)
-        return f"{username} now has {coins} coins."
-    return "User not found."
+# Create a Blueprint
+blueprint = Blueprint('leaderboard', __name__, template_folder='../templates')
 
-def get_leaderboard(db):
+# Initialize TinyDB
+db = TinyDB('db.json')
+
+def get_leaderboard():
     users = db.table('users')
-    sorted_users = sorted(users.all(), key=lambda x: x.get('coins', 0), reverse = True)
+    all_users = users.all()
     
-    for rank,user in enumerate(sorted_users, start=1):
-        print(f"{rank}. {user['username']} - {user['coins']} coins")
+    # Sort users by coins in descending order
+    leaderboard = sorted(all_users, key=lambda user: user.get('coins', 0), reverse=True)
+    
+    return leaderboard
+
+@blueprint.route('/leaderboard')
+def leaderboard_page():
+    leaderboard = get_leaderboard()
+    return render_template('leaderboard.html', leaderboard=leaderboard)
