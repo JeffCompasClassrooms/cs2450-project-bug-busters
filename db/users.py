@@ -1,5 +1,7 @@
 import tinydb
 
+
+
 def new_user(db, username, password):
     users = db.table('users')
     User = tinydb.Query()
@@ -8,7 +10,8 @@ def new_user(db, username, password):
     user_record = {
             'username': username,
             'password': password,
-            'friends': []
+            'friends': [],
+            'banned' : False
             }
     return users.insert(user_record)
 
