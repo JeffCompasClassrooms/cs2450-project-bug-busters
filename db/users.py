@@ -6,12 +6,16 @@ def new_user(db, username, password, email):
     if users.get(User.username == username):
         return None
     user_record = {
-        'username': username,
-        'password': password,
-        'email': email,
-        'banned': False,  # Ensure the banned field is present and set to False by default
-        'friends': []  # Initialize friends as an empty list
+
     }
+
+            'username': username,
+            'password': password,
+            'friends': [],
+            'coins': 0,
+            'banned' : False
+            }
+
     return users.insert(user_record)
 
 def get_user(db, username, password):
