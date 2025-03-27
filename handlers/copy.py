@@ -1,2 +1,2 @@
-title = 'YouFace 2.0'
-subtitle = "A billion dollars and it's yours!"
+title = 'Bet Brawl'
+subtitle = "Betting frfr"
