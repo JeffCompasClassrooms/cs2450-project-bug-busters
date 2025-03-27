@@ -53,13 +53,32 @@
               <form method="post" action="/logout" class="d-inline">
                 <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
               </form>
-              <form method="post" action="/ban"></form>
-                <button type="submit" class="form-control btn btn-secondary" name="ban"><Self-Ban></button>
-              </form>
+              
+              <button class="btn btn-dark ml-2" id="Self-Ban">Self Ban</button>
+
               {% endif %}
               <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
-              <button class="btn btn-dark ml-2" id="Self-Ban">Self Ban</button>
             </ul>
+                <script>
+                document.getElementById('Self-Ban').addEventListener('click', async function() {
+                    const response = await fetch('/login/ban', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({})
+                    });
+
+                    if (response.ok) {
+                        alert("You have been banned.");
+                        window.location.href = "/logout";
+                    } else {
+                        alert("Failed to ban user.");
+                    }
+                });
+                </script>
+
           </div>
         </div>
       </nav>

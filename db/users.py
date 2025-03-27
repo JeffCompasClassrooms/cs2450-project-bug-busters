@@ -11,10 +11,7 @@ def new_user(db, username, password):
             'username': username,
             'password': password,
             'friends': [],
-<<<<<<< HEAD
-=======
             'coins': 0,
->>>>>>> refs/remotes/origin/Osunabb
             'banned' : False
             }
     return users.insert(user_record)

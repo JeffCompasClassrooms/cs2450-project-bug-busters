@@ -19,7 +19,7 @@ def convert_time(ts):
 
 app.register_blueprint(friends.blueprint)
 app.register_blueprint(login.blueprint)
-app.register_blueprint(posts.blueprint)
+app.register_blueprint(posts.blueprint)    
 app.register_blueprint(leaderboard.blueprint)
 
 app.secret_key = 'mygroup'

@@ -1,9 +1,6 @@
 import flask
 import tinydb
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/Osunabb
 from handlers import copy
 from db import posts, users, helpers
 
