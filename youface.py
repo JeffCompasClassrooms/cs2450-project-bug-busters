@@ -9,6 +9,7 @@ import tinydb
 # handlers
 from handlers import friends, login, posts
 from db import leaderboard 
+from db import blackjack
 
 app = flask.Flask(__name__)
 
@@ -21,6 +22,7 @@ app.register_blueprint(friends.blueprint)
 app.register_blueprint(login.blueprint)
 app.register_blueprint(posts.blueprint)
 app.register_blueprint(leaderboard.blueprint)
+app.register_blueprint(blackjack.blackjack_bp)
 
 app.secret_key = 'mygroup'
 app.config['SESSION_TYPE'] = 'filesystem'
