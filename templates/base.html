@@ -50,7 +50,10 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
               </li>
-            </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
+              </li>
+</ul>
             <ul class="navbar-nav pull-right">
               {% if user %}
               <form method="post" action="/logout" class="d-inline">
