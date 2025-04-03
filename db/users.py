@@ -6,9 +6,6 @@ def new_user(db, username, password, email):
     if users.get(User.username == username):
         return None
     user_record = {
-
-    }
-
             'username': username,
             'password': password,
             'friends': [],
