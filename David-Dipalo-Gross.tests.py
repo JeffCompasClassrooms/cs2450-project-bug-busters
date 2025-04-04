@@ -3,16 +3,21 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 import time
 
-# Path to your ChromeDriver
-chrome_driver_path = r"C:\Users\rlmee\Downloads\unit testing\chromedriver-win64\chromedriver-win64\chromedriver.exe"
 
-# Initialize WebDriver with Service
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service)
+
+options = webdriver.ChromeOptions()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 # Base URL of your Flask app
 BASE_URL = "http://localhost:5000"
