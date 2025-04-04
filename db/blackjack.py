@@ -7,7 +7,7 @@ from db import posts, users, helpers
 
 blackjack_bp = Blueprint('blackjack', __name__, url_prefix='/blackjack')
 
-card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] # hi bye
+card_categories = ['Hearts', 'Diamonds', 'Clubs', 'Spades'] # hi byeee
 cards_list = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
 
 def create_deck():

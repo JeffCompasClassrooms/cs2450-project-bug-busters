@@ -17,7 +17,11 @@ options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+# Create Service object for ChromeDriver
+service = Service(ChromeDriverManager().install())
+
+# Initialize the driver with options and service
+driver = webdriver.Chrome(service=service, options=options)
 
 # Base URL of your Flask app
 BASE_URL = "http://localhost:5000"
