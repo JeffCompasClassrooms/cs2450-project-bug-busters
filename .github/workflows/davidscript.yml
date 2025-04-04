@@ -35,10 +35,12 @@ jobs:
       - name: Start Flask app in background
         run: |
           nohup python youface.py > flask.log 2>&1 &
-          sleep 5
+          sleep 5  # Give Flask app time to start
 
       - name: Run Selenium tests
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          FLASK_URL: http://localhost:5000  # Ensure this is the correct URL for your app
         run: |
           python David-Dipalo-Gross.tests.py
+
