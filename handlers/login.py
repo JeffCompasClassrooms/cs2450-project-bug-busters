@@ -1,4 +1,5 @@
 import flask
+import tinydb
 
 from handlers import copy
 from db import posts, users, helpers
@@ -64,6 +65,17 @@ def logout():
     resp.set_cookie('username', '', expires=0)
     resp.set_cookie('password', '', expires=0)
     return resp
+
+@blueprint.route('/ban', methods=['POST'])
+def ban(db, user):
+    """Log out and ban the user."""
+    users = db.table('users')
+    User = tinydb.Query()
+    
+    # Update user in the database
+    users.update({'banned': True}, User.id == user['id'])  
+
+    return "User banned", 200  # Return a success message
 
 @blueprint.route('/')
 def index():

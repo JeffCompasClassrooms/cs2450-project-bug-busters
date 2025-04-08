@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h2>Casino</h2>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="{{ url_for('casino.casino_page') }}">Casino</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Promotions</a></li>
+            <li><a href="#">Support</a></li>
+        </ul>
+    </div>
+
+    <!-- Wallet (Centered at the Top) -->
+    <div class="wallet">
+        Wallet: <span class="balance">$100.00</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Section Container for BetBrawl Originals and Games -->
+        <div class="section-container" style="margin-left: -200px;">
+            <!-- BetBrawl Originals -->
+            <h2 class="section-title">BetBrawl Originals</h2>
+
+            <!-- Games Section -->
+            <div class="games">
+                <a href="{{ url_for('casino.roulette') }}">
+                    <img class="game-img" src="{{ url_for('static', filename='roulette.png') }}" alt="Roulette Game" />
+                </a>
+
+                <a href="{{ url_for('casino.slots') }}">
+                    <img class="game-img" src="{{ url_for('static', filename='slots.png') }}" alt="Slots Game" />
+                </a>
+
+                <a href="{{ url_for('casino.dice') }}">
+                    <img class="game-img" src="{{ url_for('static', filename='dice.png') }}" alt="Dice Game" />
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
