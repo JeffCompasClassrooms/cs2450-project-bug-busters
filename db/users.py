@@ -1,6 +1,6 @@
 import tinydb
 
-def new_user(db, username, password, email):
+def new_user(db, username, password):
     users = db.table('users')
     User = tinydb.Query()
     if users.get(User.username == username):
@@ -12,7 +12,6 @@ def new_user(db, username, password, email):
             'coins': 0,
             'banned' : False
             }
-
     return users.insert(user_record)
 
 
@@ -28,37 +27,46 @@ def update_user_coins(db, user, amount):
 def get_user(db, username, password):
     users = db.table('users')
     User = tinydb.Query()
-    user = users.get((User.username == username) & (User.password == password))
-    
-    if user:
-        # Check if the user is banned
-        if user.get('banned', False):  # Defaults to False if 'banned' is not present
-            return None  # User is banned
-    return user
+    return users.get((User.username == username) &
+            (User.password == password))
 
-def get_user_friends(db, username):
+def get_user_by_name(db, username):
     users = db.table('users')
     User = tinydb.Query()
-    user = users.get(User.username == username)
-    
-    if not user:
-        return None  # User doesn't exist
-    
-    # Now retrieve the friends
+    return users.get(User.username == username)
+
+def delete_user(db, username, password):
+    users = db.table('users')
+    User = tinydb.Query()
+    return users.remove((User.username == username) &
+            (User.password == password))
+
+def add_user_friend(db, user, friend):
+    users = db.table('users')
+    User = tinydb.Query()
+    if friend not in user['friends']:
+        if users.get(User.username == friend):
+            user['friends'].append(friend)
+            users.upsert(user, (User.username == user['username']) &
+                    (User.password == user['password']))
+            return 'Friend {} added successfully!'.format(friend), 'success'
+        return 'User {} does not exist.'.format(friend), 'danger'
+    return 'You are already friends with {}.'.format(friend), 'warning'
+
+def remove_user_friend(db, user, friend):
+    users = db.table('users')
+    User = tinydb.Query()
+    if friend in user['friends']:
+        user['friends'].remove(friend)
+        users.upsert(user, (User.username == user['username']) &
+                (User.password == user['password']))
+        return 'Friend {} successfully unfriended!'.format(friend), 'success'
+    return 'You are not friends with {}.'.format(friend), 'warning'
+
+def get_user_friends(db, user):
+    users = db.table('users')
+    User = tinydb.Query()
     friends = []
-    for friend_username in user.get('friends', []):
-        friend = users.get(User.username == friend_username)
-        if friend:
-            friends.append(friend)
-    
+    for friend in user['friends']:
+        friends.append(users.get(User.username == friend))
     return friends
-
-def ban_user_by_email(db, email):
-    users = db.table('users')
-    User = tinydb.Query()
-    user = users.get(User.email == email)
-    if user:
-        user['banned'] = True
-        users.update(user, User.email == email)
-        return True
-    return False
