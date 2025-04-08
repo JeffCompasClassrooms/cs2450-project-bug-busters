@@ -3,10 +3,11 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      -Bryson_Francis_Branch
+      - Bryson_Francis_Branch
   pull_request:
     branches:
-      -Bryson_Francis_Branch
+      - Bryson_Francis_Branch
+
 jobs:
   selenium:
     runs-on: ubuntu-latest
