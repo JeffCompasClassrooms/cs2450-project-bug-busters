@@ -9,7 +9,7 @@ def new_user(db, username, password):
             'username': username,
             'password': password,
             'friends': [],
-            'coins': 0,
+            'coins': 100,
             'banned' : False
             }
     return users.insert(user_record)
