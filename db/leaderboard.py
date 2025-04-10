@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, current_app
 from tinydb import TinyDB
 
 # Create a Blueprint
-blueprint = Blueprint('leaderboard', __name__, template_folder='../templates')
+blueprint = Blueprint('leaderboard', __name__)
 
 # Initialize TinyDB
 db = TinyDB('db.json')
@@ -16,7 +16,7 @@ def get_leaderboard():
     
     return leaderboard
 
-@blueprint.route('/leaderboard')
-def leaderboard_page():
-    leaderboard = get_leaderboard()
-    return render_template('leaderboard.html', leaderboard=leaderboard)
+# Add a context processor to make leaderboard data available to all templates
+@blueprint.app_context_processor
+def inject_leaderboard():
+    return {'leaderboard': get_leaderboard()}

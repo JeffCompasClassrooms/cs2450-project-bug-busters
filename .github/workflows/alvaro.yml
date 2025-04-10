@@ -3,10 +3,10 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      - Bryson_Francis_Branch
+      - osuna_branch
   pull_request:
     branches:
-      - Bryson_Francis_Branch
+      - osuna_branch
 
 jobs:
   selenium:
@@ -41,4 +41,4 @@ jobs:
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
         run: |
-          python bryson_francis_selenium.py
+          python alvaro_unit_tests.py

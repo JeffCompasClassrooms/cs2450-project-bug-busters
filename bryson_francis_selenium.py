@@ -1,20 +1,20 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import time
-'''
-ELEMENTS EXIST
-ELEMENTS CONTAIN CERTAIN TEXT
-PUT SOMETHING IN A FIELD
-    AND CLICK A BUTTON
-        AND CHECK THAT SOMETHING HAPPENED
+import os
 
-CHECK IF AN ELEMENT IS A CERTAIN COLOR
-'''
-# Specify the path to ChromeDriver
-chrome_driver_path = "/usr/local/bin/chromedriver" #you'll need to put the path to YOUR chromedriver here
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service)
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+
+# Use Remote WebDriver with the standalone Selenium Chrome container
+selenium_url = os.environ.get("SELENIUM_REMOTE_URL", "http://localhost:4444/wd/hub")
+driver = webdriver.Remote(
+    command_executor=selenium_url,
+    options=options
+)
 
 try:
     driver.get("http://localhost:5000/loginscreen")
@@ -22,17 +22,10 @@ try:
 
     print("--= Beginning Tests - <Bryson Francis> =--")
     login_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Login']")
+    print("[PASSED] - Login Button Exists.") if login_button else print("[FAILED] - Login button not found.")
 
-    if login_button:
-        print("[PASSED] - Login Button Exists.")
-    else:
-        print("[FAILED] - Login button not found.")
-
-    create_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")                                                                                                                                          
-    if create_button:
-        print("[PASSED] - Create Button Exists.")
-    else:
-        print("[FAILED] - Create button not found.")
+    create_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit'][value='Create']")
+    print("[PASSED] - Create Button Exists.") if create_button else print("[FAILED] - Create button not found.")
 
     driver.find_element(By.NAME, "username").send_keys("testuser")
     driver.find_element(By.NAME, "password").send_keys("pass1234")
@@ -40,23 +33,16 @@ try:
     print("[PASSED] - Log in successful.")
     time.sleep(5)
 
-
     driver.find_element(By.CSS_SELECTOR, "input[type='text'][name='name']").send_keys("goose")
     driver.find_element(By.CSS_SELECTOR, "button[type='submit'][name='addfriend']").click()
     time.sleep(3)
     print("[PASSED] - Add friend button successful.")
-    
+
     friend = driver.find_element(By.CSS_SELECTOR, "a[href='/friend/goose']")
-    if friend:
-        print("[PASSED] - Friend Exists.")
-    else:
-        print("[FAILED] - Friend not found.")
+    print("[PASSED] - Friend Exists.") if friend else print("[FAILED] - Friend not found.")
 
     dark_mode_button = driver.find_element(By.ID, "darkModeToggle")
-    if dark_mode_button:
-        print("[PASSED] - Dark Mode Button Exists.")
-    else:
-        print("[FAILED] - Dark Mode button not found.")
+    print("[PASSED] - Dark Mode Button Exists.") if dark_mode_button else print("[FAILED] - Dark Mode button not found.")
 
     textarea = driver.find_element(By.NAME, "post")
     textarea.click()
@@ -65,19 +51,12 @@ try:
     driver.find_element(By.NAME, 'post-submit').click()
     print("[PASSED] - Post successful.")
     time.sleep(3)
+
     feed = driver.find_element(By.CLASS_NAME, "card-text")
-    if feed:
-        print("[PASSED] - New Post Exists in Feed.")
-    else:
-        print("[FAILED] - New Post not found.")
+    print("[PASSED] - New Post Exists in Feed.") if feed else print("[FAILED] - New Post not found.")
+
     driver.find_element(By.CSS_SELECTOR, "button[name='logout']").click()
     print("[PASSED] - Log out successful.")
-
-
-    
-
-
-
 
 except Exception as e:
     print("Error:", e)

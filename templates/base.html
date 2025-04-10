@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-
-<html lang="en">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
     <head>
       <meta charset="utf-8">
       <title>{{ title }}</title>
       <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
-       <link rel="stylesheet" href="{{ url_for('static', filename='casino.css') }}" type="text/css">
       <link rel="stylesheet" href="{{ url_for('static', filename='youface.css') }}" type="text/css">
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -28,6 +25,43 @@
           background-color: #555;
           border-color: #777;
         }
+        .leaderboard-table {
+          width: 100%;
+          text-align: left;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+        }
+        #leaderboard-container {
+          position: absolute; /* Change from fixed to absolute */
+          right: 20px;
+          top: 200px; /* Increase from 150px to 200px to move it down */
+          width: 300px;
+          z-index: 100;
+          background-color: white;
+          max-height: 80vh; /* Limit height to prevent overflow */
+          overflow-y: auto; /* Add scrolling to the leaderboard itself */
+        }
+        .dark-mode #leaderboard-container {
+          background-color: #3a3a3a;
+        }
+        .container:not(.jumbotron .container) {
+          padding-right: 330px;
+        }
+        
+        @media (max-width: 992px) {
+  #leaderboard-container {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    max-height: none;
+  }
+  
+  .container:not(.jumbotron .container) {
+    padding-right: 15px;
+  }
+}
       </style>
     </head>
 
@@ -48,9 +82,6 @@
                 <a class="nav-link" href="{{ url_for('login.index') }}">Social</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
               </li>
 </ul>
@@ -66,72 +97,62 @@
         </div>
       </nav>
 
-
-  <style>
-    /* Remove unwanted padding/margins */
-    .jumbotron {
-        padding: 0;
-        margin: 0;
-        background: none;
-    }
-    .container {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important; /* Ensure full width */
-    }
-  </style>
-</head>
-<body>
-
-  {% if request.endpoint != "casino.casino_page" %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="/">{{ title }}</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="https://utahtech.edu">Utah Tech</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('casino.casino_page') }}">Casino</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav pull-right">
-          {% if user %}
-          <form method="post" action="/logout">
-            <button type="submit" class="btn btn-secondary">Logout</button>
-          </form>
-          {% endif %}
-        </ul>
+      <div class="jumbotron">
+        <div class="container">
+          <h1><a href="/">{{title}}</a></h1>
+          <p class="lead">{{subtitle}}</p>
+        </div>
       </div>
 
-    </div>
-  </nav>
-  {% endif %}
+      <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-dismissible alert-{{ category }} fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
-  <!-- Flash Messages -->
-  <div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {% block content %}
+        {% endblock %}
+      </div>
+
+      <!-- Leaderboard Sidebar -->
+      <div id="leaderboard-container" class="col-md-4">
+        <button class="btn btn-primary w-100 mb-2" data-toggle="collapse" data-target="#leaderboardSection">Toggle Leaderboard</button>
+        <div class="collapse show" id="leaderboardSection">
+          <div class="card">
+            <div class="card-header bg-dark text-white">Leaderboard</div>
+            <div class="card-body">
+              <table class="leaderboard-table table table-striped">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Coins</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in leaderboard %}
+                  <tr>
+                    <td class="rank">{{ loop.index }}</td>
+                    <td>{{ user['username'] }}</td>
+                    <td>{{ user['coins'] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-  </div>
-
-  <!-- Content Block -->
-  {% block content %}{% endblock %}
-
-
-
+        </div>
+      </div>
+      <!-- End Leaderboard Sidebar -->
+       
       <script>
         document.addEventListener("DOMContentLoaded", function () {
           const darkModeToggle = document.getElementById("darkModeToggle");
@@ -152,5 +173,4 @@
         });
       </script>
     </body>
-
 </html>
