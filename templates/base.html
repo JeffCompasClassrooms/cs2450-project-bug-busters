@@ -25,6 +25,43 @@
           background-color: #555;
           border-color: #777;
         }
+        .leaderboard-table {
+          width: 100%;
+          text-align: left;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+        }
+        #leaderboard-container {
+          position: absolute; /* Change from fixed to absolute */
+          right: 20px;
+          top: 200px; /* Increase from 150px to 200px to move it down */
+          width: 300px;
+          z-index: 100;
+          background-color: white;
+          max-height: 80vh; /* Limit height to prevent overflow */
+          overflow-y: auto; /* Add scrolling to the leaderboard itself */
+        }
+        .dark-mode #leaderboard-container {
+          background-color: #3a3a3a;
+        }
+        .container:not(.jumbotron .container) {
+          padding-right: 330px;
+        }
+        
+        @media (max-width: 992px) {
+  #leaderboard-container {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    max-height: none;
+  }
+  
+  .container:not(.jumbotron .container) {
+    padding-right: 15px;
+  }
+}
       </style>
     </head>
 
@@ -43,9 +80,6 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="login.html">Social</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
@@ -88,6 +122,37 @@
         {% endblock %}
       </div>
 
+      <!-- Leaderboard Sidebar -->
+      <div id="leaderboard-container" class="col-md-4">
+        <button class="btn btn-primary w-100 mb-2" data-toggle="collapse" data-target="#leaderboardSection">Toggle Leaderboard</button>
+        <div class="collapse show" id="leaderboardSection">
+          <div class="card">
+            <div class="card-header bg-dark text-white">Leaderboard</div>
+            <div class="card-body">
+              <table class="leaderboard-table table table-striped">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Coins</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in leaderboard %}
+                  <tr>
+                    <td class="rank">{{ loop.index }}</td>
+                    <td>{{ user['username'] }}</td>
+                    <td>{{ user['coins'] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Leaderboard Sidebar -->
+       
       <script>
         document.addEventListener("DOMContentLoaded", function () {
           const darkModeToggle = document.getElementById("darkModeToggle");

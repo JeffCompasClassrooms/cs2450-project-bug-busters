@@ -22,7 +22,7 @@ def loginscreen():
             return flask.redirect(flask.url_for('login.index'))
 
     return flask.render_template('login.html', title=copy.title,
-            subtitle=copy.subtitle)
+            subtitle=copy.subtitle,hide_leaderboard=True)
 
 @blueprint.route('/login', methods=['POST'])
 def login():
