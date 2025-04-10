@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Blackjack</h1>
+
+<p>Coins: {{ coins }}</p>
+
+{% if bet == 0 %}
+<form method="POST" action="{{ url_for('blackjack.place_bet') }}">
+    <label for="bet">Place your bet:</label>
+    <input type="number" name="bet" min="1" max="{{ coins }}" required>
+    <button type="submit">Start Game</button>
+</form>
+{% else %}
+<p>Current Bet: {{ bet }}</p>
+
+<h2>Player's Cards (Score: {{ player_score }})</h2>
+<p>
+    {% for card in player_cards %}
+    {{ card[0] }} of {{ card[1] }}<br>
+    {% endfor %}
+</p>
+
+<h2>Dealer's Cards {% if game_over %}(Score: {{ dealer_score }}){% endif %}</h2>
+<p>
+    {% if game_over %}
+    {% for card in dealer_cards %}
+    {{ card[0] }} of {{ card[1] }}<br>
+    {% endfor %}
+    {% else %}
+    {{ dealer_cards[0][0] }} of {{ dealer_cards[0][1] }} and [Hidden]
+    {% endif %}
+</p>
+
+    {% if not game_over %}
+<a href="{{ url_for('blackjack.hit') }}"><button>Hit</button></a>
+<a href="{{ url_for('blackjack.stand') }}"><button>Stand</button></a>
+    {% else %}
+        {% if player_score > 21 %}
+<h2>Dealer Wins! (Player Busted)</h2>
+        {% elif dealer_score > 21 %}
+<h2>Player Wins! (Dealer Busted)</h2>
+        {% elif player_score > dealer_score %}
+<h2>Player Wins!</h2>
+        {% elif dealer_score > player_score %}
+<h2>Dealer Wins!</h2>
+        {% else %}
+<h2>It's a Tie!</h2>
+        {% endif %}
+<a href="{{ url_for('blackjack.reset') }}"><button>Play Again</button></a>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

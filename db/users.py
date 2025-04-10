@@ -9,10 +9,20 @@ def new_user(db, username, password):
             'username': username,
             'password': password,
             'friends': [],
-            'coins': 0,
+            'coins': 100,
             'banned' : False
             }
     return users.insert(user_record)
+
+
+def update_user_coins(db, user, amount):
+    """Adds coins to the user's account."""
+    users = db.table('users')
+    User = tinydb.Query()
+    
+    # Update the user's coin balance by the given amount
+    users.update({'coins': user['coins'] + amount}, (User.username == user['username']) & (User.password == user['password']))
+
 
 def get_user(db, username, password):
     users = db.table('users')

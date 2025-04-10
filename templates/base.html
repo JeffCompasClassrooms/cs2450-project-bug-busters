@@ -7,34 +7,91 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='youface.css') }}" type="text/css">
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <style>
+        .dark-mode {
+          background-color: #2c2c2c;
+          color: #ffffff;
+        }
+        .dark-mode .navbar,
+        .dark-mode .jumbotron,
+        .dark-mode .container,
+        .dark-mode .alert,
+        .dark-mode .btn {
+          background-color: #3a3a3a;
+          color: #ffffff;
+          border-color: #555;
+        }
+        .dark-mode .btn-dark {
+          background-color: #555;
+          border-color: #777;
+        }
+        .leaderboard-table {
+          width: 100%;
+          text-align: left;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+        }
+        #leaderboard-container {
+          position: absolute; /* Change from fixed to absolute */
+          right: 20px;
+          top: 200px; /* Increase from 150px to 200px to move it down */
+          width: 300px;
+          z-index: 100;
+          background-color: white;
+          max-height: 80vh; /* Limit height to prevent overflow */
+          overflow-y: auto; /* Add scrolling to the leaderboard itself */
+        }
+        .dark-mode #leaderboard-container {
+          background-color: #3a3a3a;
+        }
+        .container:not(.jumbotron .container) {
+          padding-right: 330px;
+        }
+        
+        @media (max-width: 992px) {
+  #leaderboard-container {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    max-height: none;
+  }
+  
+  .container:not(.jumbotron .container) {
+    padding-right: 15px;
+  }
+}
+      </style>
     </head>
 
     <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
           <a class="navbar-brand" href="/">{{ title }}</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="#navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item">
-                <a class="nav-link" href="https://utahtech.edu">Utah Tech</a>
+                <a class="nav-link" href="https://utahtech.edu">Casino</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link 2</a>
+                <a class="nav-link" href="login.html">Social</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
+                <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
               </li>
-            </ul>
+</ul>
             <ul class="navbar-nav pull-right">
               {% if user %}
-              <form method="post" action="/logout">
+              <form method="post" action="/logout" class="d-inline">
                 <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
               </form>
               {% endif %}
+              <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
             </ul>
           </div>
         </div>
@@ -64,5 +121,56 @@
         {% block content %}
         {% endblock %}
       </div>
+
+      <!-- Leaderboard Sidebar -->
+      <div id="leaderboard-container" class="col-md-4">
+        <button class="btn btn-primary w-100 mb-2" data-toggle="collapse" data-target="#leaderboardSection">Toggle Leaderboard</button>
+        <div class="collapse show" id="leaderboardSection">
+          <div class="card">
+            <div class="card-header bg-dark text-white">Leaderboard</div>
+            <div class="card-body">
+              <table class="leaderboard-table table table-striped">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Coins</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in leaderboard %}
+                  <tr>
+                    <td class="rank">{{ loop.index }}</td>
+                    <td>{{ user['username'] }}</td>
+                    <td>{{ user['coins'] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Leaderboard Sidebar -->
+       
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const darkModeToggle = document.getElementById("darkModeToggle");
+          const body = document.body;
+          
+          if (localStorage.getItem("darkMode") === "enabled") {
+            body.classList.add("dark-mode");
+          }
+          
+          darkModeToggle.addEventListener("click", function () {
+            body.classList.toggle("dark-mode");
+            if (body.classList.contains("dark-mode")) {
+              localStorage.setItem("darkMode", "enabled");
+            } else {
+              localStorage.removeItem("darkMode");
+            }
+          });
+        });
+      </script>
     </body>
 </html>
