@@ -3,10 +3,10 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      - Osunabb
+      - osuna_branch
   pull_request:
     branches:
-      - Osunabb
+      - osuna_branch
 
 jobs:
   selenium:
