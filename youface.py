@@ -9,7 +9,15 @@ import tinydb
 # handlers
 
 from handlers import friends, login, posts, casino
-from db import leaderboard 
+from db import leaderboard
+from flask import Blueprint, render_template
+
+blueprint = Blueprint('casino', __name__, url_prefix='/casino')
+
+@blueprint.route('/roulette')
+def roulette():
+    return render_template('casino/roulette.html')
+ 
 
 
 app = flask.Flask(__name__)

@@ -3,18 +3,17 @@ import tinydb
 def new_user(db, username, password, email):
     users = db.table('users')
     User = tinydb.Query()
+
     if users.get(User.username == username):
-        return None
+        return None  # Username already exists
+
     user_record = {
-
+        'username': username,
+        'password': password,
+        'friends': [],
+        'coins': 0,
+        'banned': False
     }
-
-            'username': username,
-            'password': password,
-            'friends': [],
-            'coins': 0,
-            'banned' : False
-            }
 
     return users.insert(user_record)
 
@@ -51,7 +50,6 @@ def ban_user_by_email(db, email):
     User = tinydb.Query()
     user = users.get(User.email == email)
     if user:
-        user['banned'] = True
-        users.update(user, User.email == email)
+        users.update({'banned': True}, User.email == email)  # Correct update syntax
         return True
     return False

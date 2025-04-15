@@ -21,24 +21,23 @@
     <!-- Main Content -->
     <div class="main-content">
         <!-- Section Container for BetBrawl Originals and Games -->
-        <div class="section-container" style="margin-left: -200px;">
+        <div class="section-container" style="margin-left: -700px;">
             <!-- BetBrawl Originals -->
             <h2 class="section-title">BetBrawl Originals</h2>
 
             <!-- Games Section -->
-            <div class="games">
-                <a href="{{ url_for('casino.roulette') }}">
-                    <img class="game-img" src="{{ url_for('static', filename='roulette.png') }}" alt="Roulette Game" />
-                </a>
-
-                <a href="{{ url_for('casino.slots') }}">
-                    <img class="game-img" src="{{ url_for('static', filename='slots.png') }}" alt="Slots Game" />
-                </a>
-
-                <a href="{{ url_for('casino.dice') }}">
-                    <img class="game-img" src="{{ url_for('static', filename='dice.png') }}" alt="Dice Game" />
-                </a>
-            </div>
+            <a href="{{ url_for('casino.roulette') }}">
+                <img class="game-img" src="https://via.placeholder.com/150?text=Roulette" alt="Roulette Game" />
+            </a>
+            
+            <a href="{{ url_for('casino.slots') }}">
+                <img class="game-img" src="https://via.placeholder.com/150?text=Slots" alt="Slots Game" />
+            </a>
+            
+            <a href="{{ url_for('casino.dice') }}">
+                <img class="game-img" src="https://via.placeholder.com/150?text=Dice" alt="Dice Game" />
+            </a>
+            
         </div>
     </div>
 {% endblock %}

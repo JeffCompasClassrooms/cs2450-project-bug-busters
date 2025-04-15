@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Roulette Game{% endblock %}
+
+{% block nav %}
+<!-- Add any navigation items for the casino here. -->
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/casino/roulette">Roulette</a></li>
+        <!-- Add other game links if needed -->
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Roulette Game</h2>
+    <div class="balance">
+        <h3>Your Balance: $<span id="balance">{{ balance }}</span></h3>
+    </div>
+    <form id="roulette-form">
+        <div class="betting-section">
+            <input type="number" name="bet" placeholder="Enter a number (0-36)" min="0" max="36" required>
+            <input type="number" name="wager" placeholder="Wager Amount" min="1" required>
+            <button type="submit">Spin the Wheel</button>
+        </div>
+    </form>
+    <div class="result">
+        <h3>Spin Result: <span id="result">-</span></h3>
+    </div>
+    <div class="message">
+        <p id="message">{{ message }}</p>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/roulette.js') }}"></script>
+{% endblock %}
