@@ -37,28 +37,31 @@
           </button>
 
           <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="https://utahtech.edu">Casino</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="login.html">Social</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
-              </li>
-</ul>
-            <ul class="navbar-nav pull-right">
-              {% if user %}
-              <form method="post" action="/logout" class="d-inline">
-                <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
-              </form>
-              {% endif %}
-              <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
-            </ul>
+              <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="https://utahtech.edu">Casino</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="login.html">Social</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('blackjack.blackjack_page') }}">Blackjack</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav pull-right">
+                  {% if user %}
+                  <form method="post" action="/logout" class="d-inline">
+                      <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
+                  </form>
+                  <form method="post" action="/ban" class="d-inline ml-2">
+                      <button type="submit" class="form-control btn btn-danger" name="ban" onclick="return confirm('Are you sure you want to ban yourself? This cannot be undone.')">Self-Ban</button>
+                  </form>
+                  {% endif %}
+                  <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
+              </ul>
           </div>
         </div>
       </nav>
