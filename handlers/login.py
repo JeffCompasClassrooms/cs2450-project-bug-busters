@@ -26,35 +26,50 @@ def loginscreen():
 
 @blueprint.route('/login', methods=['POST'])
 def login():
-    """Log in the user.
-
-    Using the username and password fields on the form, create, delete, or
-    log in a user, based on what button they click.
-    """
+    """Log in the user."""
     db = helpers.load_db()
 
     username = flask.request.form.get('username')
     password = flask.request.form.get('password')
-
-    resp = flask.make_response(flask.redirect(flask.url_for('login.index')))
-    resp.set_cookie('username', username)
-    resp.set_cookie('password', password)
-
     submit = flask.request.form.get('type')
+
+    user = users.get_user(db, username, password)
+
+    # Handle user creation
     if submit == 'Create':
-        if users.new_user(db, username, password) is None:
-            resp.set_cookie('username', '', expires=0)
-            resp.set_cookie('password', '', expires=0)
-            flask.flash('Username {} already taken!'.format(username), 'danger')
+        if user is not None:
+            flask.flash(f'Username {username} already taken!', 'danger')
             return flask.redirect(flask.url_for('login.loginscreen'))
-        flask.flash('User {} created successfully!'.format(username), 'success')
+        users.new_user(db, username, password)
+        flask.flash(f'User {username} created successfully!', 'success')
+        resp = flask.make_response(flask.redirect(flask.url_for('login.index')))
+        resp.set_cookie('username', username)
+        resp.set_cookie('password', password)
+        return resp
+
+    # Handle user deletion
     elif submit == 'Delete':
         if users.delete_user(db, username, password):
-            resp.set_cookie('username', '', expires=0)
-            resp.set_cookie('password', '', expires=0)
-            flask.flash('User {} deleted successfully!'.format(username), 'success')
+            flask.flash(f'User {username} deleted successfully!', 'success')
+        resp = flask.make_response(flask.redirect(flask.url_for('login.loginscreen')))
+        resp.set_cookie('username', '', expires=0)
+        resp.set_cookie('password', '', expires=0)
+        return resp
 
-    return resp
+    # Handle login
+    elif user:
+        if user.get('banned'):
+            flask.flash('Your account has been banned.', 'danger')
+            return flask.redirect(flask.url_for('login.loginscreen'))
+
+        # If not banned, proceed with login
+        resp = flask.make_response(flask.redirect(flask.url_for('login.index')))
+        resp.set_cookie('username', username)
+        resp.set_cookie('password', password)
+        return resp
+
+    flask.flash('Invalid username or password.', 'danger')
+    return flask.redirect(flask.url_for('login.loginscreen'))
 
 @blueprint.route('/logout', methods=['POST'])
 def logout():
@@ -67,15 +82,26 @@ def logout():
     return resp
 
 @blueprint.route('/ban', methods=['POST'])
-def ban(db, user):
-    """Log out and ban the user."""
-    users = db.table('users')
-    User = tinydb.Query()
-    
-    # Update user in the database
-    users.update({'banned': True}, User.id == user['id'])  
+def ban():
+    db = helpers.load_db()
 
-    return "User banned", 200  # Return a success message
+    username = flask.request.cookies.get('username')
+    password = flask.request.cookies.get('password')
+    if not username or not password:
+        return "Unauthorized", 401
+
+    user = users.get_user(db, username, password)
+    if not user:
+        return "Unauthorized", 401
+
+    users_table = db.table('users')
+    User = tinydb.Query()
+    users_table.update({'banned': True}, (User.username == username) & (User.password == password))
+
+    resp = flask.make_response(flask.redirect(flask.url_for('login.loginscreen')))
+    resp.set_cookie('username', '', expires=0)
+    resp.set_cookie('password', '', expires=0)
+    return resp
 
 @blueprint.route('/')
 def index():

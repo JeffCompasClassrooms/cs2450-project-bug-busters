@@ -86,12 +86,15 @@
               </li>
 </ul>
             <ul class="navbar-nav pull-right">
-              {% if user %}
-              <form method="post" action="/logout" class="d-inline">
-                <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
-              </form>
-              {% endif %}
-              <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
+                {% if user %}
+                <form method="post" action="/logout" class="d-inline">
+                    <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
+                </form>
+                <form method="post" action="/ban" class="d-inline ml-2">
+                    <button type="submit" class="form-control btn btn-danger" name="ban" onclick="return confirm('Are you sure you want to ban yourself? This cannot be undone.')">Self-Ban</button>
+                </form>
+                {% endif %}
+                <button class="btn btn-dark ml-2" id="darkModeToggle">Toggle Dark Mode</button>
             </ul>
           </div>
         </div>
