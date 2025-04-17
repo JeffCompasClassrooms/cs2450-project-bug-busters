@@ -31,6 +31,12 @@
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const leaderboardContainer = document.getElementById("leaderboard-container");
+        if (leaderboardContainer) {
+          leaderboardContainer.style.display = "none";
+        }
+      });
   function showCreateButton() {
     document.getElementById('create-btn').style.display = 'inline-block';
   }
