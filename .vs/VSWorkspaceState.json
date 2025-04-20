@@ -2,11 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\.github",
+    "\\.githubworkflows",
     "\\db",
     "\\handlers",
     "\\static",
     "\\templates",
     "\\tests"
   ],
+  "SelectedNode": "\\db\\users.py",
   "PreviewInSolutionExplorer": false
 }
