@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\db",
+    "\\handlers",
+    "\\static",
+    "\\templates",
+    "\\tests"
+  ],
+  "PreviewInSolutionExplorer": false
+}
