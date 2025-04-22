@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='casino.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='roulette.css') }}">
+  <!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
 
   <style>
     .dark-mode {
@@ -58,7 +63,7 @@
 
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="https://utahtech.edu">Utah Tech</a></li>
+          
           <li class="nav-item"><a class="nav-link" href="{{ url_for('casino.casino_page') }}">Casino</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('leaderboard.leaderboard_page') }}">Leaderboard</a></li>
         </ul>

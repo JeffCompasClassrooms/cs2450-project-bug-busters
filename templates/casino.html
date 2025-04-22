@@ -5,7 +5,9 @@
     <div class="sidebar">
         <h2>Casino</h2>
         <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="{{ url_for('login.loginscreen') }}">Home</a></li>
+
+
             <li><a href="{{ url_for('casino.casino_page') }}">Casino</a></li>
             <li><a href="#">Sports</a></li>
             <li><a href="#">Promotions</a></li>
@@ -13,31 +15,42 @@
         </ul>
     </div>
 
-    <!-- Wallet (Centered at the Top) -->
-    <div class="wallet">
-        Wallet: <span class="balance">$100.00</span>
-    </div>
-
     <!-- Main Content -->
-    <div class="main-content">
-        <!-- Section Container for BetBrawl Originals and Games -->
-        <div class="section-container" style="margin-left: -700px;">
-            <!-- BetBrawl Originals -->
-            <h2 class="section-title">BetBrawl Originals</h2>
+    <div class="game-card margin-left">
+        <a href="{{ url_for('casino.roulette') }}" class="game-link">
+          <div class="game-icon">
+            <i class="fas fa-compact-disc"></i> <!-- Looks like a roulette wheel -->
+          </div>
+          <h3 class="game-title">Roulette</h3>
+          <p class="game-desc">Try your luck on the wheel!</p>
+        </a>
+      </div>
+    
 
-            <!-- Games Section -->
-            <a href="{{ url_for('casino.roulette') }}">
-                <img class="game-img" src="https://via.placeholder.com/150?text=Roulette" alt="Roulette Game" />
-            </a>
+      <div class="game-card">
+        <a href="{{ url_for('casino.blackjack') }}" class="game-link">
+            <div class="game-icon">
+                <i class="fas fa-dice"></i>
+
+            </div>
+            <h3 class="game-title">Blackjack</h3>
+            <p class="game-desc">Try your hand at the classic card game!</p>
+        </a>
+    </div>
+    
+      <div style="display: flex; justify-content: flex-start;">
+        <div class="game-card">
+          <!-- Game content here -->
+        </div>
+      </div>
+      
+      
+
             
-            <a href="{{ url_for('casino.slots') }}">
-                <img class="game-img" src="https://via.placeholder.com/150?text=Slots" alt="Slots Game" />
-            </a>
             
-            <a href="{{ url_for('casino.dice') }}">
-                <img class="game-img" src="https://via.placeholder.com/150?text=Dice" alt="Dice Game" />
-            </a>
             
+            
+           
         </div>
     </div>
 {% endblock %}
