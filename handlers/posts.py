@@ -21,3 +21,6 @@ def post():
     posts.add_post(db, user, post)
 
     return flask.redirect(flask.url_for('login.index'))
+
+
+   

@@ -68,7 +68,6 @@ body {
     padding: 10px; /* Optional: Add padding for a bit of space inside the wallet */
 }
 
-
 /* Section Title */
 .section-title {
     font-size: 28px;
@@ -97,3 +96,63 @@ body {
 .game-img:hover {
     transform: scale(1.1); /* Slight zoom effect on hover */
 }
+
+.game-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.3s;
+    margin: 15px;
+    width: 200px;
+    display: inline-block;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.game-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.game-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.game-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.game-desc {
+    font-size: 14px;
+    color: #666;
+}
+
+.game-icon i {
+    font-size: 48px;
+    color: #007bff;
+    transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
+}
+
+.game-card:hover .game-icon i {
+    transform: scale(1.2);
+    color: #28a745;
+    text-shadow: 0 0 10px #28a745;
+}
+
+.game-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.game-link:hover {
+    text-decoration: none; /* This removes the underline on hover */
+    color: inherit; /* Keeps the text color from changing if you want */
+}
+
